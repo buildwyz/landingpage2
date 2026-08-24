@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PulseGym — Your Gym. Your System. Your Growth.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#A3E635;
+    --lime-dark:#7FBA1E;
+    --black:#111111;
+    --cream:#FFFCEB;
+    --cream-dim:#F5F0D8;
+    --white:#FFFFFF;
+    --red:#FF4D4D;
+    --border:4px solid var(--black);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--black);
+    font-family:'Space Grotesk',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Archivo Black',sans-serif;
+    text-transform:uppercase;
+    line-height:0.95;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 32px;}
+  .hard-shadow{box-shadow:8px 8px 0 var(--black);}
+  .hard-shadow-lime{box-shadow:8px 8px 0 var(--lime);}
+  .hard-shadow-sm{box-shadow:4px 4px 0 var(--black);}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;
+    font-size:16px;padding:16px 28px;border:var(--border);
+    border-radius:100px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .btn:active{transform:translate(2px,2px);box-shadow:none !important;}
+  .btn-primary{background:var(--lime);color:var(--black);box-shadow:6px 6px 0 var(--black);}
+  .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--black);}
+  .btn-outline{background:var(--cream);color:var(--black);box-shadow:6px 6px 0 var(--black);}
+  .btn-outline:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--black);}
+  .btn-dark{background:var(--black);color:var(--lime);box-shadow:6px 6px 0 var(--lime);}
+  .btn-dark:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--lime);}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;
+    letter-spacing:0.12em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border:2px solid var(--black);border-radius:100px;
+    background:var(--white);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);border:2px solid var(--black);}
+
+  /* NAV */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:var(--cream);
+    border-bottom:var(--border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:24px;text-transform:uppercase;}
+  .logo-mark{
+    width:38px;height:38px;background:var(--black);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .logo-mark span{
+    width:16px;height:16px;background:var(--lime);
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  .nav-links{display:flex;gap:36px;align-items:center;}
+  .nav-links a{font-weight:600;font-size:15px;position:relative;padding:4px 0;}
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:-2px;width:0;height:3px;background:var(--lime-dark);
+    transition:width .2s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{display:flex;gap:12px;align-items:center;}
+  .nav-cta .btn{padding:11px 20px;font-size:14px;box-shadow:4px 4px 0 var(--black);}
+  .burger{display:none;width:44px;height:44px;border:var(--border);border-radius:8px;background:var(--lime);align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;}
+  .burger div{width:20px;height:3px;background:var(--black);}
+
+  /* HERO */
+  .hero{
+    padding:80px 0 60px;
+    position:relative;
+    border-bottom:var(--border);
+    background:
+      radial-gradient(circle at 92% 8%, rgba(163,230,53,0.35) 0, transparent 45%);
+    overflow:hidden;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(42px,6vw,84px);margin:20px 0 24px;}
+  .hero h1 .accent{
+    background:var(--black);color:var(--lime);
+    padding:0 12px;display:inline-block;transform:rotate(-1.2deg);
+    box-shadow:6px 6px 0 var(--lime);
+  }
+  .hero p{font-size:19px;line-height:1.6;max-width:520px;color:#2c2c2c;margin-bottom:34px;font-weight:500;}
+  .hero-ctas{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:36px;}
+  .hero-trust{display:flex;gap:22px;align-items:center;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#444;}
+  .avatars{display:flex;}
+  .avatars .av{
+    width:34px;height:34px;border-radius:50%;border:3px solid var(--cream);
+    margin-left:-10px;background:var(--black);display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo Black',sans-serif;color:var(--lime);font-size:12px;
+  }
+  .avatars .av:first-child{margin-left:0;}
+
+  /* Hero dashboard visual */
+  .dash-card{
+    background:var(--white);border:var(--border);border-radius:20px;
+    box-shadow:12px 12px 0 var(--black);
+    padding:0;position:relative;transform:rotate(1deg);
+  }
+  .dash-top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 20px;border-bottom:3px solid var(--black);background:var(--cream-dim);
+    border-radius:17px 17px 0 0;
+  }
+  .dash-dots{display:flex;gap:6px;}
+  .dash-dots span{width:10px;height:10px;border-radius:50%;border:2px solid var(--black);background:var(--white);}
+  .dash-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.08em;}
+  .dash-body{padding:22px;}
+  .dash-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+  .dash-stat{border:3px solid var(--black);border-radius:12px;padding:12px 14px;background:var(--cream);}
+  .dash-stat .num{font-family:'Archivo Black',sans-serif;font-size:22px;}
+  .dash-stat .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#555;margin-top:2px;}
+  .dash-chart{
+    border:3px solid var(--black);border-radius:12px;padding:16px;background:var(--black);
+    margin-bottom:14px;
+  }
+  .dash-chart .lbl{color:var(--lime);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;margin-bottom:10px;font-weight:700;}
+  .bars{display:flex;align-items:flex-end;gap:8px;height:80px;}
+  .bars i{flex:1;background:var(--lime);border-radius:4px 4px 0 0;display:block;}
+  .dash-list{border:3px solid var(--black);border-radius:12px;overflow:hidden;}
+  .dash-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;font-size:13px;font-weight:600;border-bottom:2px solid #eee;}
+  .dash-row:last-child{border-bottom:none;}
+  .status{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;
+    padding:3px 9px;border-radius:100px;border:2px solid var(--black);
+  }
+  .status.active{background:var(--lime);}
+  .status.due{background:var(--white);}
+  .status.overdue{background:var(--red);color:var(--white);}
+  .float-chip{
+    position:absolute;background:var(--lime);border:var(--border);border-radius:14px;
+    padding:10px 16px;font-family:'Archivo Black',sans-serif;font-size:14px;
+    box-shadow:6px 6px 0 var(--black);transform:rotate(-6deg);
+  }
+  .float-chip.c1{top:-18px;left:-24px;}
+  .float-chip.c2{bottom:-16px;right:-20px;background:var(--black);color:var(--lime);transform:rotate(4deg);}
+
+  /* STATS STRIP */
+  .stats-strip{
+    background:var(--black);color:var(--cream);border-bottom:var(--border);
+    padding:38px 0;
+  }
+  .stats-strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .stat-item{text-align:center;border-right:2px solid #333;padding:0 10px;}
+  .stat-item:last-child{border-right:none;}
+  .stat-item .num{font-family:'Archivo Black',sans-serif;font-size:clamp(28px,3.4vw,44px);color:var(--lime);}
+  .stat-item .lbl{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;margin-top:6px;color:#ccc;}
+
+  /* SECTION HEADERS */
+  section{padding:100px 0;border-bottom:var(--border);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{max-width:720px;margin-bottom:60px;}
+  .sec-head h2{font-size:clamp(32px,4.6vw,56px);margin:16px 0 18px;}
+  .sec-head p{font-size:17px;color:#333;line-height:1.6;font-weight:500;}
+
+  /* FEATURE GRID (numbered) */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:var(--border);border-radius:20px;overflow:hidden;background:var(--black);}
+  .feat-card{
+    background:var(--cream);padding:36px 30px;border-right:3px solid var(--black);border-bottom:3px solid var(--black);
+    position:relative;transition:background .2s ease;
+  }
+  .feat-card:hover{background:var(--lime);}
+  .feat-grid .feat-card:nth-child(3n){border-right:none;}
+  .feat-num{font-family:'Archivo Black',sans-serif;font-size:15px;color:#999;margin-bottom:22px;}
+  .feat-card h3{font-size:21px;margin-bottom:12px;}
+  .feat-card p{font-size:14.5px;color:#333;line-height:1.55;font-weight:500;}
+
+  /* PRODUCT SECTION (bento) */
+  .bento{
+    display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,240px);gap:20px;
+  }
+  .bento-card{
+    background:var(--white);border:var(--border);border-radius:18px;padding:24px;
+    box-shadow:6px 6px 0 var(--black);display:flex;flex-direction:column;justify-content:space-between;
+    overflow:hidden;position:relative;
+  }
+  .bento-card h4{font-family:'Archivo Black',sans-serif;font-size:18px;text-transform:uppercase;}
+  .bento-card p{font-size:13px;color:#444;font-weight:500;margin-top:4px;}
+  .bento-1{grid-column:span 2;grid-row:span 1;background:var(--lime);}
+  .bento-2{grid-column:span 1;grid-row:span 2;background:var(--black);color:var(--cream);}
+  .bento-2 h4,.bento-2 p{color:var(--cream);}
+  .bento-3{grid-column:span 1;grid-row:span 1;}
+  .bento-4{grid-column:span 1;grid-row:span 1;background:var(--cream-dim);}
+  .bento-5{grid-column:span 1;grid-row:span 1;}
+  .bento-6{grid-column:span 2;grid-row:span 1;background:var(--cream-dim);}
+  .mini-avatars{display:flex;}
+  .mini-avatars .av{width:30px;height:30px;border-radius:50%;background:var(--black);color:var(--lime);border:2px solid var(--white);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:'Archivo Black',sans-serif;}
+  .mini-avatars .av:first-child{margin-left:0;}
+  .mini-bars{display:flex;gap:5px;align-items:flex-end;height:50px;}
+  .mini-bars i{flex:1;background:var(--lime);border-radius:3px 3px 0 0;}
+  .ring{width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--lime) 0 87%, #2a2a2a 87% 100%);display:flex;align-items:center;justify-content:center;}
+  .ring span{width:44px;height:44px;border-radius:50%;background:var(--black);color:var(--lime);display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'JetBrains Mono',monospace;font-weight:700;}
+  .card-icon{width:44px;height:44px;border:3px solid var(--black);border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--white);margin-bottom:10px;}
+  .trainer-row{display:flex;gap:-4px;}
+
+  /* WORKFLOW */
+  .flow{display:flex;align-items:stretch;gap:0;position:relative;}
+  .flow-step{
+    flex:1;background:var(--white);border:3px solid var(--black);border-radius:16px;padding:26px 22px;
+    position:relative;margin-right:34px;
+  }
+  .flow-step:last-child{margin-right:0;}
+  .flow-step::after{
+    content:'→';position:absolute;right:-30px;top:50%;transform:translateY(-50%);
+    font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--black);
+  }
+  .flow-step:last-child::after{display:none;}
+  .flow-tag{
+    width:36px;height:36px;border-radius:50%;background:var(--lime);border:3px solid var(--black);
+    display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:14px;
+    margin-bottom:16px;
+  }
+  .flow-step h4{font-size:17px;text-transform:uppercase;font-family:'Archivo Black',sans-serif;margin-bottom:8px;}
+  .flow-step p{font-size:13.5px;color:#444;font-weight:500;line-height:1.5;}
+
+  /* GROWTH */
+  .growth-grid{display:grid;grid-template-columns:1.3fr 0.7fr;gap:24px;}
+  .growth-main{
+    background:var(--black);border:var(--border);border-radius:20px;padding:32px;color:var(--cream);
+    box-shadow:10px 10px 0 var(--lime);
+  }
+  .growth-main .top-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;flex-wrap:wrap;gap:12px;}
+  .growth-main .big-num{font-family:'Archivo Black',sans-serif;font-size:44px;color:var(--lime);}
+  .growth-main .sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:0.06em;}
+  .growth-chart-area{display:flex;align-items:flex-end;gap:10px;height:180px;}
+  .growth-chart-area i{flex:1;background:linear-gradient(180deg,var(--lime),var(--lime-dark));border-radius:6px 6px 0 0;position:relative;}
+  .kpi-stack{display:flex;flex-direction:column;gap:20px;}
+  .kpi-card{
+    background:var(--white);border:3px solid var(--black);border-radius:16px;padding:20px;
+    box-shadow:5px 5px 0 var(--black);flex:1;display:flex;flex-direction:column;justify-content:center;
+  }
+  .kpi-card .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:#555;margin-bottom:6px;}
+  .kpi-card .val{font-family:'Archivo Black',sans-serif;font-size:28px;}
+  .kpi-card .delta{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--lime-dark);margin-top:4px;}
+
+  /* TESTIMONIAL */
+  .testi-wrap{
+    background:var(--lime);border:var(--border);border-radius:24px;padding:70px 60px;
+    box-shadow:14px 14px 0 var(--black);position:relative;overflow:hidden;
+  }
+  .testi-mark{
+    font-family:'Archivo Black',sans-serif;font-size:160px;line-height:0;position:absolute;top:60px;left:40px;opacity:0.15;
+  }
+  .testi-wrap blockquote{
+    font-family:'Archivo Black',sans-serif;text-transform:none;font-size:clamp(24px,3.2vw,40px);
+    max-width:820px;line-height:1.15;position:relative;z-index:1;
+  }
+  .testi-who{display:flex;align-items:center;gap:16px;margin-top:36px;position:relative;z-index:1;}
+  .testi-who .av{width:56px;height:56px;border-radius:50%;background:var(--black);color:var(--lime);border:3px solid var(--black);display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:18px;}
+  .testi-who .name{font-weight:700;font-size:16px;}
+  .testi-who .role{font-family:'JetBrains Mono',monospace;font-size:12px;color:#1c1c1c;}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch;}
+  .price-card{
+    background:var(--white);border:3px solid var(--black);border-radius:20px;padding:36px 30px;
+    box-shadow:6px 6px 0 var(--black);display:flex;flex-direction:column;
+  }
+  .price-card.pop{background:var(--black);color:var(--cream);box-shadow:8px 8px 0 var(--lime);transform:scale(1.03);}
+  .price-card .plan{font-family:'JetBrains Mono',monospace;font-size:13px;text-transform:uppercase;font-weight:700;letter-spacing:0.06em;}
+  .price-card .price{font-family:'Archivo Black',sans-serif;font-size:48px;margin:14px 0 4px;}
+  .price-card.pop .price{color:var(--lime);}
+  .price-card .per{font-size:13px;color:#666;margin-bottom:24px;font-weight:600;}
+  .price-card.pop .per{color:#999;}
+  .price-card ul{margin-bottom:28px;flex:1;}
+  .price-card li{padding:9px 0;font-size:14px;font-weight:500;border-bottom:1px solid #e5e0c8;display:flex;gap:10px;}
+  .price-card.pop li{border-bottom:1px solid #2a2a2a;}
+  .price-card li::before{content:'✓';font-weight:900;color:var(--lime-dark);}
+  .price-card.pop li::before{color:var(--lime);}
+  .badge-pop{
+    background:var(--lime);color:var(--black);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    text-transform:uppercase;padding:5px 12px;border-radius:100px;display:inline-block;margin-bottom:14px;
+    align-self:flex-start;
+  }
+
+  /* FINAL CTA */
+  .final-cta{background:var(--lime);border-bottom:var(--border);padding:110px 0;text-align:center;position:relative;overflow:hidden;}
+  .final-cta h2{font-size:clamp(36px,6vw,76px);margin-bottom:26px;}
+  .final-cta p{font-size:18px;font-weight:600;margin-bottom:36px;}
+  .shape{position:absolute;border:4px solid var(--black);}
+  .shape.circle{border-radius:50%;}
+  .shape1{width:120px;height:120px;top:10%;left:6%;transform:rotate(12deg);}
+  .shape2{width:70px;height:70px;bottom:14%;right:10%;border-radius:50%;background:var(--black);}
+  .shape3{width:90px;height:90px;top:20%;right:14%;background:var(--cream);}
+
+  /* FOOTER */
+  footer{background:var(--black);color:var(--cream);padding:70px 0 30px;}
+  .foot-top{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:40px;margin-bottom:60px;}
+  .foot-logo{display:flex;align-items:center;gap:10px;font-family:'Archivo Black',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:16px;color:var(--cream);}
+  .foot-top p{font-size:14px;color:#999;max-width:280px;line-height:1.6;}
+  .foot-col h5{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;color:var(--lime);letter-spacing:0.08em;margin-bottom:18px;}
+  .foot-col a{display:block;font-size:14px;color:#ccc;margin-bottom:12px;font-weight:500;}
+  .foot-col a:hover{color:var(--lime);}
+  .foot-bottom{border-top:2px solid #2a2a2a;padding-top:24px;display:flex;justify-content:space-between;font-size:13px;color:#888;font-family:'JetBrains Mono',monospace;flex-wrap:wrap;gap:10px;}
+
+  /* RESPONSIVE */
+  @media (max-width:980px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .hero-grid{grid-template-columns:1fr;}
+    .feat-grid{grid-template-columns:1fr 1fr;}
+    .feat-grid .feat-card:nth-child(3n){border-right:3px solid var(--black);}
+    .feat-grid .feat-card:nth-child(2n){border-right:none;}
+    .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,220px);}
+    .bento-1{grid-column:span 2;}
+    .bento-2{grid-column:span 1;grid-row:span 1;}
+    .bento-6{grid-column:span 2;}
+    .flow{flex-direction:column;gap:44px;}
+    .flow-step{margin-right:0;}
+    .flow-step::after{content:'↓';right:50%;top:auto;bottom:-40px;transform:translateX(50%);}
+    .growth-grid{grid-template-columns:1fr;}
+    .kpi-stack{flex-direction:row;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .price-card.pop{transform:none;}
+    .foot-top{grid-template-columns:1fr 1fr;}
+    .stats-strip .wrap{grid-template-columns:repeat(2,1fr);row-gap:26px;}
+    .stat-item{border-right:none;border-bottom:2px solid #333;padding-bottom:18px;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 20px;}
+    .feat-grid{grid-template-columns:1fr;}
+    .feat-grid .feat-card{border-right:none !important;}
+    .bento{grid-template-columns:1fr;grid-template-rows:auto;}
+    .bento-1,.bento-2,.bento-3,.bento-4,.bento-5,.bento-6{grid-column:span 1;height:auto;min-height:180px;}
+    .foot-top{grid-template-columns:1fr;}
+    .testi-wrap{padding:44px 26px;}
+    section{padding:70px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav wrap">
+    <div class="logo">
+      <div class="logo-mark"><span></span></div>
+      PulseGym
+    </div>
+    <ul class="nav-links">
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-outline" style="display:none;">Log in</a>
+      <a href="#pricing" class="btn btn-primary">Start Building</a>
+    </div>
+    <div class="burger"><div></div><div></div><div></div></div>
+  </nav>
+</header>
+
+<section class="hero" id="platform">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span> GYM OPERATING SYSTEM</span>
+      <h1>YOUR GYM.<br>YOUR SYSTEM.<br><span class="accent">YOUR GROWTH.</span></h1>
+      <p>Stop stitching together spreadsheets, group chats, and three different payment apps. PulseGym is the single system that runs your members, payments, attendance, and trainers — so you can run your gym.</p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn btn-dark">Start Building ↗</a>
+        <a href="#features" class="btn btn-outline">See Platform</a>
+      </div>
+      <div class="hero-trust">
+        <div class="avatars">
+          <div class="av">JK</div><div class="av">MR</div><div class="av">TA</div><div class="av">+</div>
+        </div>
+        <span>Trusted by 850+ gym owners worldwide</span>
+      </div>
+    </div>
+
+    <div style="position:relative;">
+      <div class="dash-card">
+        <div class="float-chip c1">⚡ +18% MoM</div>
+        <div class="dash-top">
+          <div class="dash-dots"><span></span><span></span><span></span></div>
+          <div class="dash-title">PULSEGYM · DASHBOARD</div>
+          <div style="width:20px;"></div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-stats-row">
+            <div class="dash-stat"><div class="num">1,284</div><div class="lbl">Active members</div></div>
+            <div class="dash-stat"><div class="num">$42.6K</div><div class="lbl">MRR</div></div>
+            <div class="dash-stat"><div class="num">96%</div><div class="lbl">Retention</div></div>
+          </div>
+          <div class="dash-chart">
+            <div class="lbl">Check-ins · this week</div>
+            <div class="bars">
+              <i style="height:40%;"></i><i style="height:65%;"></i><i style="height:50%;"></i>
+              <i style="height:80%;"></i><i style="height:60%;"></i><i style="height:95%;"></i><i style="height:70%;"></i>
+            </div>
+          </div>
+          <div class="dash-list">
+            <div class="dash-row"><span>Priya Nair</span><span class="status active">Active</span></div>
+            <div class="dash-row"><span>Daniel Osei</span><span class="status due">Due soon</span></div>
+            <div class="dash-row"><span>Marta Vidal</span><span class="status overdue">Overdue</span></div>
+          </div>
+        </div>
+        <div class="float-chip c2">98.7% ✓ paid</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="wrap">
+    <div class="stat-item"><div class="num">12K+</div><div class="lbl">Members Managed</div></div>
+    <div class="stat-item"><div class="num">850+</div><div class="lbl">Gyms</div></div>
+    <div class="stat-item"><div class="num">98.7%</div><div class="lbl">Payment Success</div></div>
+    <div class="stat-item"><div class="num">4.9/5</div><div class="lbl">Customer Rating</div></div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><span class="dot"></span> WHY PULSEGYM</span>
+      <h2>Built for gyms that outgrew spreadsheets.</h2>
+      <p>Every part of your operation, wired together — so member data, payments, and attendance never live in three different tools again.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-num">01 / 06</div>
+        <h3>One member record</h3>
+        <p>Signups, plans, notes, and history in a single profile — no more hunting across apps to answer one question.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">02 / 06</div>
+        <h3>Payments that just clear</h3>
+        <p>Automated billing, retries, and receipts. Failed cards get recovered before they become a lost member.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">03 / 06</div>
+        <h3>Live attendance</h3>
+        <p>Every check-in feeds straight into engagement scoring, so you know who's drifting before they cancel.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">04 / 06</div>
+        <h3>Trainer scheduling</h3>
+        <p>Shifts, sessions, and payouts in one calendar your trainers actually check.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">05 / 06</div>
+        <h3>Class capacity, solved</h3>
+        <p>Waitlists, check-ins, and room limits managed automatically — no double-bookings.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">06 / 06</div>
+        <h3>Reports on demand</h3>
+        <p>Revenue, churn, and utilization — exportable, always current, zero manual pivot tables.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><span class="dot"></span> THE PLATFORM</span>
+      <h2>Everything your gym needs.</h2>
+      <p>Six modules, one system — each one built to remove a specific tool from your stack.</p>
+    </div>
+    <div class="bento">
+      <div class="bento-card bento-1">
+        <div>
+          <h4>Members</h4>
+          <p>Full profiles, plans & history</p>
+        </div>
+        <div class="mini-avatars">
+          <div class="av">JK</div><div class="av">MR</div><div class="av">TA</div><div class="av">SL</div><div class="av">+9</div>
+        </div>
+      </div>
+      <div class="bento-card bento-2">
+        <div>
+          <div class="card-icon" style="background:#1c1c1c;border-color:var(--lime);">💳</div>
+          <h4>Payments</h4>
+          <p>Auto-billing & recovery</p>
+        </div>
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif;font-size:30px;color:var(--lime);">98.7%</div>
+          <p style="margin-top:2px;">success rate</p>
+        </div>
+      </div>
+      <div class="bento-card bento-3">
+        <h4>Attendance</h4>
+        <div class="mini-bars">
+          <i style="height:30%;"></i><i style="height:55%;"></i><i style="height:40%;"></i><i style="height:75%;"></i><i style="height:60%;"></i>
+        </div>
+        <p>Check-ins tracked live</p>
+      </div>
+      <div class="bento-card bento-4">
+        <div class="card-icon">🧑‍🏫</div>
+        <h4>Trainers</h4>
+        <p>Shifts, sessions & payouts</p>
+      </div>
+      <div class="bento-card bento-5">
+        <h4>Classes</h4>
+        <div class="ring"><span>82%</span></div>
+        <p>Avg. class capacity filled</p>
+      </div>
+      <div class="bento-card bento-6">
+        <div>
+          <h4>Reports</h4>
+          <p>Revenue, churn & utilization — exportable, always current</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span class="status active">Revenue ↑</span>
+          <span class="status due">Churn 3.1%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><span class="dot"></span> THE JOURNEY</span>
+      <h2>From new signup to loyal member.</h2>
+      <p>PulseGym follows every member through the exact path that keeps them coming back.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-tag">1</div>
+        <h4>Signup</h4>
+        <p>A member joins online or in-person — plan, waiver, and profile created instantly.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-tag">2</div>
+        <h4>Payment</h4>
+        <p>Card on file, billing scheduled, receipt sent — no manual invoicing required.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-tag">3</div>
+        <h4>Attendance</h4>
+        <p>Every check-in is logged and scored, building a live picture of engagement.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-tag">4</div>
+        <h4>Retention</h4>
+        <p>Drop-off risk is flagged early, with automated nudges before it becomes a cancellation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><span class="dot"></span> BUSINESS GROWTH</span>
+      <h2>Watch the business, not the spreadsheet.</h2>
+      <p>Live KPIs that tell you exactly where revenue and retention stand — updated the moment something changes.</p>
+    </div>
+    <div class="growth-grid">
+      <div class="growth-main">
+        <div class="top-row">
+          <div>
+            <div class="sub">Monthly recurring revenue</div>
+            <div class="big-num">$42,680</div>
+          </div>
+          <span class="status active" style="background:var(--lime);">↑ 18.2% vs last month</span>
+        </div>
+        <div class="growth-chart-area">
+          <i style="height:35%;"></i><i style="height:48%;"></i><i style="height:42%;"></i>
+          <i style="height:60%;"></i><i style="height:55%;"></i><i style="height:74%;"></i>
+          <i style="height:68%;"></i><i style="height:88%;"></i><i style="height:100%;"></i>
+        </div>
+      </div>
+      <div class="kpi-stack">
+        <div class="kpi-card">
+          <div class="lbl">Churn rate</div>
+          <div class="val">3.1%</div>
+          <div class="delta">↓ 0.8pt this quarter</div>
+        </div>
+        <div class="kpi-card">
+          <div class="lbl">New members</div>
+          <div class="val">214</div>
+          <div class="delta">↑ 26 vs last month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="wrap">
+    <div class="testi-wrap">
+      <div class="testi-mark">"</div>
+      <blockquote>We replaced four tools and a shared spreadsheet with PulseGym in one week. Payment failures alone paid for the subscription.</blockquote>
+      <div class="testi-who">
+        <div class="av">RC</div>
+        <div>
+          <div class="name">Rhea Cabrera</div>
+          <div class="role">Owner, Ironline Strength Club</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><span class="dot"></span> PRICING</span>
+      <h2>Plans that grow with your gym.</h2>
+      <p>No setup fees, no long contracts. Switch or cancel anytime.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan">Starter</div>
+        <div class="price">$49<span style="font-size:16px;">/mo</span></div>
+        <div class="per">Up to 150 members</div>
+        <ul>
+          <li>Member management</li>
+          <li>Automated billing</li>
+          <li>Attendance tracking</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="justify-content:center;">Start Building</a>
+      </div>
+      <div class="price-card pop">
+        <span class="badge-pop">Most popular</span>
+        <div class="plan">Growth</div>
+        <div class="price">$129<span style="font-size:16px;">/mo</span></div>
+        <div class="per">Up to 800 members</div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>Trainer scheduling</li>
+          <li>Class capacity management</li>
+          <li>Retention alerts</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn btn-primary" style="justify-content:center;">Start Building</a>
+      </div>
+      <div class="price-card">
+        <div class="plan">Scale</div>
+        <div class="price">$299<span style="font-size:16px;">/mo</span></div>
+        <div class="per">Unlimited members</div>
+        <ul>
+          <li>Everything in Growth</li>
+          <li>Multi-location support</li>
+          <li>Custom reporting</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="justify-content:center;">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="final-cta">
+  <div class="shape shape1"></div>
+  <div class="shape shape2 circle"></div>
+  <div class="shape shape3"></div>
+  <div class="wrap">
+    <h2>Stop managing your gym manually.</h2>
+    <p>Join 850+ gyms running on one system instead of five.</p>
+    <a href="#pricing" class="btn btn-dark">Start Building ↗</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo">
+          <div class="logo-mark"><span></span></div>
+          PulseGym
+        </div>
+        <p>The gym operating system for members, payments, attendance, trainers, and growth — all in one place.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Platform</h5>
+        <a href="#">Members</a>
+        <a href="#">Payments</a>
+        <a href="#">Attendance</a>
+        <a href="#">Trainers</a>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Pricing</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h5>Resources</h5>
+        <a href="#">Help center</a>
+        <a href="#">Guides</a>
+        <a href="#">API docs</a>
+        <a href="#">Status</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 PulseGym, Inc.</span>
+      <span>Privacy · Terms · Security</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector('.burger')?.addEventListener('click', function(){
+    var links = document.querySelector('.nav-links');
+    if(links.style.display === 'flex'){ links.style.display='none'; }
+    else{
+      links.style.display='flex';
+      links.style.position='absolute';
+      links.style.top='100%';
+      links.style.left='0';
+      links.style.right='0';
+      links.style.background='#FFFCEB';
+      links.style.flexDirection='column';
+      links.style.padding='20px 32px';
+      links.style.borderBottom='4px solid #111111';
+      links.style.gap='18px';
+    }
+  });
+</script>
+</body>
+</html>
